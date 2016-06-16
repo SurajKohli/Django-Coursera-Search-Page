@@ -1,0 +1,17 @@
+#box{
+	border: 1px solid black;
+	margin-top: 50px;
+	background-color:white;
+/*	margin-right: 20px;
+	margin-left: 20px;*/
+
+}
+
+.logo{
+	/*border-radius:50%;*/
+	border: 1px solid #68228B;
+}
+
+.label {
+	font-size:75%;
+}

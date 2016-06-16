@@ -1,0 +1,166 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<script src="{% static "js/jquery-3.0.0.js" %}"></script>
+{# <script src="{% static "js/rango-jquery.js" %}" type="text/javascript"></script> #}
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		instructorFlag = false;
+		partnerFlag = false;
+	    obj.fetchInstructorData(); 
+	    obj.fetchPartnerData();
+	    // obj.removeEmptyData();
+	});
+
+	function imgError(image) {
+	    image.onerror = "";
+	    image.src = "{% static "css/noimage.gif" %}";
+	    return true;
+	}
+	obj = {
+		fetchInstructorData: function(argument) {
+			// body...
+			startUrl = 'https://api.coursera.org/api/instructors.v1?ids=';
+			endUrl = '&includes=firstName,lastName&fields=firstName,lastName';
+			course_js = {{courses|safe}};
+			courses = course_js.elements;
+			// contentType ="application/x-www-form-urlencoded; charset=utf-8";
+			// // // // // // // //
+			function doCheck(i){
+				instructorIds = courses[i]['instructorIds'];
+				comma_separated_instructorIds = instructorIds.join();
+				url = startUrl + comma_separated_instructorIds + endUrl;
+				$.ajax({
+					url: url,
+					responseType: 'jsonp',
+					// crossDomain: true,
+					// contentType: contentType,
+					// headers: {'Access-Control-Allow-Origin':*},
+					success: function(response) {
+						// alert(i)
+						instructors = response['elements'];
+						for( j=0; j<instructors.length;j++) {
+							// name = instructors[j]['firstName'] + ' ' + instructors[j]['lastName'];
+							name = instructors[j]['firstName'] + ' ' + instructors[j]['lastName'];
+							id = 'instructor' + String(i+1) + String(j+1);
+							instructor_elem = document.getElementById(id);
+							instructor_elem.innerHTML += name;
+							if( j == 1 ){
+								break;
+							}
+						}
+					}
+				});				
+			}
+
+			for( i = 0 ; i < course_js['elements'].length; i++ ) {
+				doCheck(i);
+			}
+
+
+			// $('.instructors > li').map(function() {
+			//     // alert(this.id);
+			//     text = $(this).html();
+			//     // alert(text);
+			// });			
+			// end for
+		},
+		// end function
+
+		//start of fetchPartnerData
+		fetchPartnerData: function(argument) {
+			startUrl = 'https://api.coursera.org/api/partners.v1?ids=';
+			course_js = {{courses|safe}};
+			courses = course_js.elements;
+
+			function doCheck2(i){
+				partnerIds = courses[i]['partnerIds'];
+				comma_separated_partnerIds = partnerIds.join();
+				url = startUrl + comma_separated_partnerIds;
+				$.ajax({
+					url: url,
+					responseType: 'jsonp',
+					success: function(response) {
+						partners = response['elements'];
+						for( j=0; j<2;j++) {
+							// name = instructors[j]['firstName'] + ' ' + instructors[j]['lastName'];
+							name = partners[j]['name'];
+							id = 'partner' + String(i+1) + String(j+1);
+							// alert(id);
+							partner_elem = document.getElementById(id);
+							partner_elem.innerHTML += name;							
+							if( partners.length <= 2 ){
+								// alert('breaking');
+								break;
+							}
+						}
+
+					}
+				});				
+			}
+
+			for( i = 0 ; i < course_js['elements'].length; i++ ) {
+				doCheck2(i);
+			}				
+		},
+		//end function
+
+		removeEmptyData: function(argument){
+			$('.instructors').children('li').each(function () {
+			    alert(this.innerHTML)
+			});
+		}
+	}
+</script>
+<head>
+<link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}" />	
+<link rel="stylesheet" type="text/css" href="{% static "css/results.css" %}" />	
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<title>Results Page</title>
+</head>
+
+<body class="row jumbotron">
+	<div class="col-md-5 col-md-offset-2">
+	<h1 id="head"> Results Page</h1>
+	<ul>
+		{% for course in courses.elements %}
+		{% with y=forloop.counter|stringformat:"s" %}
+		<div id="box">		
+		{# <li id='{{forloop.counter}}'>{{ forloop.counter }}</li> #}
+		<label class="label label-primary"> Course Name: {{ course.name }}</label>
+		<br>
+			<ul>
+				{# {% for name in course.instructorNames %} #}
+				
+				{# |add:forloop.counter|stringformat:"i" #}
+				<div class="instructors">
+					{% with id1="instructor"|add:y|add:"1" %}			
+					<label id= '{{id1}}' >Instructors: </label>
+					{% endwith %}
+					{% with id2="instructor"|add:y|add:"2" %}
+					<br>
+					<label id= '{{id2}}' ></label>
+					{% endwith %}
+				</div>
+				<br>
+				<div class="partners">
+					{% with p1="partner"|add:y|add:"1" %}			
+					<label id= '{{p1}}' >Partners: </label>
+					{% endwith %}
+					{% with p2="partner"|add:y|add:"2" %}
+					<br>
+					<label id= '{{p2}}' ></label>
+					{% endwith %}				
+				</div>
+				<br>
+				<label>Partner Logo: <img class="logo" src= {{ course.partnerLogo }} alt="Image Not Found" onerror="imgError(this);" height="95" width="95" /></label>	
+			</ul>
+		</div>		
+		{% endwith %}
+		{% endfor %}
+	</ul>
+	</div>
+</body>
+</html>
