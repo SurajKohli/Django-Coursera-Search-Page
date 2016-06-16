@@ -1,1 +1,1 @@
-web: gunicorn --port=$PORT mysite.wsgi:application
+web: gunicorn mysite.wsgi:application
