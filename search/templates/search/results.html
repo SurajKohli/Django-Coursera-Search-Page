@@ -10,7 +10,6 @@
 		partnerFlag = false;
 	    obj.fetchInstructorData(); 
 	    obj.fetchPartnerData();
-	    // obj.removeEmptyData();
 	});
 
 	function imgError(image) {
@@ -20,13 +19,12 @@
 	}
 	obj = {
 		fetchInstructorData: function(argument) {
-			// body...
 			startUrl = 'https://api.coursera.org/api/instructors.v1?ids=';
 			endUrl = '&includes=firstName,lastName&fields=firstName,lastName';
 			course_js = {{courses|safe}};
 			courses = course_js.elements;
 			// contentType ="application/x-www-form-urlencoded; charset=utf-8";
-			// // // // // // // //
+
 			function doCheck(i){
 				instructorIds = courses[i]['instructorIds'];
 				comma_separated_instructorIds = instructorIds.join();
@@ -38,10 +36,8 @@
 					// contentType: contentType,
 					// headers: {'Access-Control-Allow-Origin':*},
 					success: function(response) {
-						// alert(i)
 						instructors = response['elements'];
 						for( j=0; j<instructors.length;j++) {
-							// name = instructors[j]['firstName'] + ' ' + instructors[j]['lastName'];
 							name = instructors[j]['firstName'] + ' ' + instructors[j]['lastName'];
 							id = 'instructor' + String(i+1) + String(j+1);
 							instructor_elem = document.getElementById(id);
@@ -56,14 +52,7 @@
 
 			for( i = 0 ; i < course_js['elements'].length; i++ ) {
 				doCheck(i);
-			}
-
-
-			// $('.instructors > li').map(function() {
-			//     // alert(this.id);
-			//     text = $(this).html();
-			//     // alert(text);
-			// });			
+			}			
 			// end for
 		},
 		// end function
@@ -84,14 +73,11 @@
 					success: function(response) {
 						partners = response['elements'];
 						for( j=0; j<2;j++) {
-							// name = instructors[j]['firstName'] + ' ' + instructors[j]['lastName'];
 							name = partners[j]['name'];
 							id = 'partner' + String(i+1) + String(j+1);
-							// alert(id);
 							partner_elem = document.getElementById(id);
 							partner_elem.innerHTML += name;							
 							if( partners.length <= 2 ){
-								// alert('breaking');
 								break;
 							}
 						}
@@ -105,12 +91,6 @@
 			}				
 		},
 		//end function
-
-		removeEmptyData: function(argument){
-			$('.instructors').children('li').each(function () {
-			    alert(this.innerHTML)
-			});
-		}
 	}
 </script>
 <head>
@@ -128,13 +108,9 @@
 		{% for course in courses.elements %}
 		{% with y=forloop.counter|stringformat:"s" %}
 		<div id="box">		
-		{# <li id='{{forloop.counter}}'>{{ forloop.counter }}</li> #}
 		<label class="label label-primary"> Course Name: {{ course.name }}</label>
 		<br>
 			<ul>
-				{# {% for name in course.instructorNames %} #}
-				
-				{# |add:forloop.counter|stringformat:"i" #}
 				<div class="instructors">
 					{% with id1="instructor"|add:y|add:"1" %}			
 					<label id= '{{id1}}' >Instructors: </label>
