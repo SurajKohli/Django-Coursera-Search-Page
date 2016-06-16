@@ -13,7 +13,7 @@ The application uses AJAX for many API calls to improve the overall performance 
 
   Python Requirements
   
-Python 3.0 or above
+Python 3.0 or above '\n'
 requests -> pip install requests
 
   Django
