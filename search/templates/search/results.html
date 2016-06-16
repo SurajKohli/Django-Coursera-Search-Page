@@ -17,6 +17,7 @@
 	    image.src = "{% static "css/noimage.gif" %}";
 	    return true;
 	}
+
 	obj = {
 		fetchInstructorData: function(argument) {
 			startUrl = 'https://api.coursera.org/api/instructors.v1?ids=';
@@ -34,7 +35,7 @@
 					responseType: 'jsonp',
 					// crossDomain: true,
 					// contentType: contentType,
-					// headers: {'Access-Control-Allow-Origin':*},
+					// headers: {'Access-Control-Allow-Origin':*},					
 					success: function(response) {
 						instructors = response['elements'];
 						for( j=0; j<instructors.length;j++) {
@@ -131,7 +132,7 @@
 					{% endwith %}				
 				</div>
 				<br>
-				<label>Partner Logo: <img class="logo" src= {{ course.partnerLogo }} alt="Image Not Found" onerror="imgError(this);" height="95" width="95" /></label>	
+				<label>Partner Logo: <img class="logo" src= {{ course.partnerLogo }} alt="Image Not Found" onerror="imgError(this);" height="95" width="95"></img></label>	
 			</ul>
 		</div>		
 		{% endwith %}

@@ -2,6 +2,7 @@ Django==1.9.7
 django-cors-headers==1.1.0
 djangorestframework==3.3.3
 fancycompleter==0.5
+gunicorn==19.6.0
 ordereddict==1.1
 pdbpp==0.8.3
 Pygments==2.1.3

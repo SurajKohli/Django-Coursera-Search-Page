@@ -45,6 +45,15 @@ INSTALLED_APPS = [
 
 #CORS
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost',
+#     'localservername',
+#     'http://localservername',
+#     '127.0.0.1'
+# )
+
 
 #Added staticfiles for Heroku
 ##############
