@@ -6,8 +6,6 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		instructorFlag = false;
-		partnerFlag = false;
 	    obj.fetchInstructorData(); 
 	    obj.fetchPartnerData();
 	});
@@ -23,6 +21,9 @@
 			startUrl = 'https://api.coursera.org/api/instructors.v1?ids=';
 			endUrl = '&includes=firstName,lastName&fields=firstName,lastName';
 			course_js = {{courses|safe}};
+			// course_js = String(course_js);
+			// course_js = course_js.replace(/u'(?=[^:]+')/g, "'");
+			// data = JSON.parse(course_js);
 			courses = course_js.elements;
 			// contentType ="application/x-www-form-urlencoded; charset=utf-8";
 
