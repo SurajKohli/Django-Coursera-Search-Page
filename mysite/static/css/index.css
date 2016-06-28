@@ -5,3 +5,15 @@
 #btn{
 	margin: center;
 }
+
+.error{
+	color: #a94442;
+}
+
+.success{
+	color: #3c763d;
+}
+
+.valid{
+	color: #18bc9c;
+}

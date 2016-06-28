@@ -43,11 +43,15 @@ def index(request):
 
 def results(request):
 	if 'query' in request.GET:
-		message = 'You searched for: %r' % request.GET['query']
-	else:
-		message = 'Empty Form'
-		return render( request, 'search/index.html')
+		if request.GET['query'] == '':
+			message = 'Empty search field'		
+			return render( request, 'search/emptyForm.html')
 
+		message = 'You searched for: %r' % request.GET['query']
+
+	# code.interact(local=locals())		
+
+	myquery = request.GET['query']
 	frontQuery = 'https://api.coursera.org/api/courses.v1?q=search&query='
 	EndQuery = '&includes=instructorIds,partnerIds,partnerLogo&fields=instructorIds,partnerIds,partnerLogo'
 	url =  frontQuery + request.GET['query'] + EndQuery
@@ -56,5 +60,5 @@ def results(request):
 	except:
 		return HttpResponse('<h1>No Internet Connection</h1>')		
 	courses=response_dict.json()
-	context = { 'courses': courses }
+	context = { 'courses': courses , 'myquery': myquery}
 	return render(request, 'search/results.html' , context)

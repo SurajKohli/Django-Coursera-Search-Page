@@ -20,7 +20,7 @@
 		fetchInstructorData: function(argument) {
 			startUrl = 'https://api.coursera.org/api/instructors.v1?ids=';
 			endUrl = '&includes=firstName,lastName&fields=firstName,lastName';
-			course_js = {{courses|safe}};
+			course_js = {{ courses|safe }};
 			// course_js = String(course_js);
 			// course_js = course_js.replace(/u'(?=[^:]+')/g, "'");
 			// data = JSON.parse(course_js);
@@ -33,10 +33,12 @@
 				url = startUrl + comma_separated_instructorIds + endUrl;
 				$.ajax({
 					url: url,
+					type:'GET',
 					responseType: 'jsonp',
+					// dataType: 'jsonp',
 					// crossDomain: true,
 					// contentType: contentType,
-					// headers: {'Access-Control-Allow-Origin':*},					
+					// headers: {'Access-Control-Allow-Origin': '*' , 'Access-Control-Allow-Credentials': true},				
 					success: function(response) {
 						instructors = response['elements'];
 						for( j=0; j<instructors.length;j++) {
@@ -52,9 +54,20 @@
 				});				
 			}
 
-			for( i = 0 ; i < course_js['elements'].length; i++ ) {
-				doCheck(i);
-			}			
+			if( course_js['elements'].length < 1){
+				// $("#head").text("No Results Were Found for Given Query :(");
+				query = "{{ myquery }}";
+				h3 = document.createElement( "h3" );				
+				$("#head").append(h3);	
+				$(" h3 ").text("Your search - " + query + " - did not match any courses.");
+			}
+			else{
+
+				for( i = 0 ; i < course_js['elements'].length; i++ ) {
+					doCheck(i);
+				}	
+
+			}		
 			// end for
 		},
 		// end function

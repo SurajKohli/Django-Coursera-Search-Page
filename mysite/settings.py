@@ -45,14 +45,15 @@ INSTALLED_APPS = [
 
 #CORS
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
+# CORS_ALLOW_CREDENTIALS = False
 
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost',
-#     'localservername',
-#     'http://localservername',
-#     '127.0.0.1'
-# )
+CORS_ORIGIN_WHITELIST = (
+    # 'http://localhost',
+    # 'localservername',
+    # 'http://localservername',
+    '127.0.0.1',
+    'api.coursera.org'
+)
 
 
 #Added staticfiles for Heroku
@@ -73,10 +74,10 @@ STATICFILES_DIRS = (
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # CORS
-    'corsheaders.middleware.CorsMiddleware',    
-    'django.middleware.common.CommonMiddleware',
+    # CORS    
+    'django.middleware.common.CommonMiddleware',    
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
